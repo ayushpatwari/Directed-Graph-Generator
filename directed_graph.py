@@ -12,8 +12,8 @@ nodes = [
 
 """Replace with (start_node, end_node)"""
 connections = [
-    (1, 3),
-    (3, 4)
+    # (1, 3),
+    # (3, 4)
 ]
 
 graph = Graph(nodes, connections)

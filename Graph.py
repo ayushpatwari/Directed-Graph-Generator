@@ -18,7 +18,7 @@ class Graph:
         
         self.graph.clear()
         
-        self.graph.add_nodes_from(self.__fromNodeListToValueList())         
+        self.graph.add_nodes_from(self.nodes)         
         
         self.__addAllEdges()
 
@@ -51,8 +51,6 @@ class Graph:
         for node in self.nodes:
             array.append(node.value)
             
-        print(array)
-            
         return array
             
     def __fromValueListToNodeListOfTuple(self, array: List[tuple[int, int]]) -> List[tuple[Node, Node]]:
@@ -75,7 +73,7 @@ class Graph:
         node_list: List[Node] = list()
         
         for value in array:
-            node_list.append(Node.create_node(value))
+            node_list.append(Node(value))
 
         return node_list
     
