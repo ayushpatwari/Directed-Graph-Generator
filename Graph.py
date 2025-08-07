@@ -5,16 +5,20 @@ from Node import Node
 
 class Graph:
     def __init__(self, nodes: List[int], connections: List[tuple[int, int]]):
-        self.nodes = self.__fromArrayToNodeList(nodes)
-        self.connections = self.__fromArrayToNodeListOfTuple(connections)
+        self.nodes = self.__fromValueListToNodeList(nodes)
+        self.connections = self.__fromValueListToNodeListOfTuple(connections)
         self.graph = nx.DiGraph()
     
     def generate_graph(self):
+        """
+        Generates a directed graph created from nodes and connections
+        """
+
         plt.close()
         
         self.graph.clear()
         
-        self.graph.add_nodes_from(self.__fromNodeListToArray())         
+        self.graph.add_nodes_from(self.__fromNodeListToValueList())         
         
         self.__addAllEdges()
 
@@ -38,7 +42,10 @@ class Graph:
         plt.tight_layout()
         plt.show()
         
-    def __fromNodeListToArray(self):
+    def __fromNodeListToValueList(self):
+        """
+        Converts the nodes list to an list
+        """
         array: List[int] = list()
         
         for node in self.nodes:
@@ -48,7 +55,10 @@ class Graph:
             
         return array
             
-    def __fromArrayToNodeListOfTuple(self, array: List[tuple[int, int]]) -> List[tuple[Node, Node]]:
+    def __fromValueListToNodeListOfTuple(self, array: List[tuple[int, int]]) -> List[tuple[Node, Node]]:
+        """
+        Converts value list to list of tuple of nodes
+        """
         node_list: list[tuple[Node, Node]] = []
         
         for start_val, end_val in array:
@@ -58,7 +68,10 @@ class Graph:
         
         return node_list
             
-    def __fromArrayToNodeList(self, array):
+    def __fromValueListToNodeList(self, array):
+        """
+        Converts value list to list of Nodes
+        """
         node_list: List[Node] = list()
         
         for value in array:
@@ -67,23 +80,75 @@ class Graph:
         return node_list
     
     def __addAllEdges(self):
+        """
+        Adds all the connections as edges in the graph
+        """
         for connection in self.connections:
             self.graph.add_edge(connection[0], connection[1])
+
+        return true
     
     def __add_node(self, node: Node):
+        """
+        Private function that adds node into nodes list
+
+        Args:
+            node(Node): node to be inserted into the graph
+        
+        Returns:
+            boolean: whether inserting the node into the node list was successful
+        """
         self.nodes.append(node)
+
+        return true
         
     def add_node(self, value: int):
+        """"
+        Adds node into node list using private function __add_node while also checking for duplicates
+
+        Args:
+            value(int): integer to add into graph
+
+        Returns:
+            bool: whether adding the node to the graph was successful
+        """"
         if value not in [node.value for node in self.nodes]:  
-            self.__add_node(Node(value))
+            return self.__add_node(Node(value))
+
+        return false
     
     def __add_connection(self, start_node: Node, end_node: Node):
+        """
+        Private function that adds connection into the connections list
+
+        Args:
+            start_node(Node): Start node for the connection
+            end_node(Node): End node for the connection
+        
+        Returns:
+            bool: whether adding the connection to the connections list was successful
+        """
         if (start_node, end_node) not in [(c[0].value, c[1].value) for c in self.connections]:
-            self.connections.append((start_node, end_node))     
+            self.connections.append((start_node, end_node))
+            return true
+
+        return false
     
     def add_connection(self, start_node_value: int, end_node_value: int):
+        """"
+        Adds connection into connections list using private function __add_connection while also checking for duplicates
+
+        Args:
+            start_node_value(int): starting integer for connection
+            end_node_value(int): ending integer for connection
+
+        Returns:
+            bool: whether adding the connection to the graph was successful
+        """"
         start_node = next(node for node in self.nodes if node.value == start_node_value)
         end_node = next(node for node in self.nodes if node.value == end_node_value)
-        self.__add_connection(start_node, end_node)
+
+        return self.__add_connection(start_node, end_node)
+        
     #remove_node
     #remove_connection
