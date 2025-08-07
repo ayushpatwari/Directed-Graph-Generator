@@ -86,7 +86,7 @@ class Graph:
         for connection in self.connections:
             self.graph.add_edge(connection[0], connection[1])
 
-        return true
+        return True
     
     def __add_node(self, node: Node):
         """
@@ -100,10 +100,10 @@ class Graph:
         """
         self.nodes.append(node)
 
-        return true
+        return True
         
     def add_node(self, value: int):
-        """"
+        """
         Adds node into node list using private function __add_node while also checking for duplicates
 
         Args:
@@ -111,11 +111,11 @@ class Graph:
 
         Returns:
             bool: whether adding the node to the graph was successful
-        """"
+        """
         if value not in [node.value for node in self.nodes]:  
             return self.__add_node(Node(value))
 
-        return false
+        return False
     
     def __add_connection(self, start_node: Node, end_node: Node):
         """
@@ -130,12 +130,12 @@ class Graph:
         """
         if (start_node, end_node) not in [(c[0].value, c[1].value) for c in self.connections]:
             self.connections.append((start_node, end_node))
-            return true
+            return True
 
-        return false
+        return False
     
     def add_connection(self, start_node_value: int, end_node_value: int):
-        """"
+        """
         Adds connection into connections list using private function __add_connection while also checking for duplicates
 
         Args:
@@ -144,7 +144,7 @@ class Graph:
 
         Returns:
             bool: whether adding the connection to the graph was successful
-        """"
+        """
         start_node = next(node for node in self.nodes if node.value == start_node_value)
         end_node = next(node for node in self.nodes if node.value == end_node_value)
 
