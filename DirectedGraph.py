@@ -3,7 +3,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Node import Node
 
-class Graph:
+class DirectedGraph:
+    """
+    This is a class for making a directed graph used in discrete mathematics
+    """
     def __init__(self, nodes: List[int], connections: List[tuple[int, int]]):
         self.nodes = self.__fromValueListToNodeList(nodes)
         self.connections = self.__fromValueListToNodeListOfTuple(connections)
