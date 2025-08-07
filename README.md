@@ -14,4 +14,4 @@ To further add nodes, use the ```add_node(value)``` method.
 To further add connections, use the ```add_connection(start_node, end_node)``` method.
 
 ## Example
-![ALT text](./examples/Samplefigure.png)
+![ALT text](./examples/SampleFigure.png)
