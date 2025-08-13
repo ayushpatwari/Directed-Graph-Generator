@@ -4,6 +4,7 @@ class Node:
     """
     def __init__(self, value):
         self.value = value
+        self.connection_count = 0
     
     
     def change_value(self, new_value):
@@ -27,7 +28,10 @@ class Node:
             bool: operation success
         """
         self.value = None
-        
+    
+    def add_connection_count(self):
+        self.connection_count += 1
+
     def __str__(self):
         """
         Expresses node through its value

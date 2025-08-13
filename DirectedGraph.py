@@ -99,6 +99,21 @@ class DirectedGraph:
             node_list.append(Node(value))
 
         return node_list
+
+    def degree(self) -> int:
+        """
+        Returns the degree of the graph
+        
+        Returns:
+            int: degree of the graph
+        """
+        degree: int
+
+        for node in self.nodes:
+            degree += node.connection_count
+        
+        return degree
+            
     
     def __addAllEdges(self) -> bool:
         """
@@ -151,6 +166,8 @@ class DirectedGraph:
         """
         if (start_node, end_node) not in [(c[0].value, c[1].value) for c in self.connections]:
             self.connections.append((start_node, end_node))
+            start_node.add_connection()
+            end_node.add_connection()
             return True
 
         return False
