@@ -2,6 +2,7 @@ from typing import List
 import networkx as nx
 import matplotlib.pyplot as plt
 from Node import Node
+from NodeConnection import NodeConnection
 
 class DirectedGraph:
     """
@@ -9,7 +10,7 @@ class DirectedGraph:
     """
     def __init__(self, nodes: List[int], connections: List[tuple[int, int]]):
         self.nodes = self.__fromValueListToNodeList(nodes)
-        self.connections = self.__fromValueListToNodeListOfTuple(connections)
+        self.connections = self.__fromValueListToNodeConnectionList(connections)
         self.graph = nx.DiGraph()
     
     def generate_graph(self):
@@ -45,7 +46,7 @@ class DirectedGraph:
         plt.tight_layout()
         plt.show()
         
-    def __fromNodeListToValueList(self):
+    def __fromNodeListToValueList(self -> List[int]):
         """
         Converts the nodes list to an list
         """
@@ -68,10 +69,29 @@ class DirectedGraph:
             node_list.append((start_node, end_node))
         
         return node_list
-            
-    def __fromValueListToNodeList(self, array):
+
+    def __fromValueListToNodeConnectionList(self, array: List[tuple[int, int]]) -> List[NodeConnection]:
         """
-        Converts value list to list of Nodes
+        Converts value list to list of node connection
+        """
+        node_connection_list: list[NodeConnection] = []
+
+        for start_val, end_val in array:
+            start_node: Node
+            end_node: Node
+            for node in self.nodes:
+                if node.value == start_val:
+                    start_node = node
+                if node.value == end_val:
+                    end_node = node
+            node_connection_list.append(NodeConnection(start_node, end_node))
+        
+        return node_connection_list
+                    
+            
+    def __fromValueListToNodeList(self, array) -> List[Node]:
+        """
+        Converts value list to list of N"l"des
         """
         node_list: List[Node] = list()
         
@@ -80,16 +100,16 @@ class DirectedGraph:
 
         return node_list
     
-    def __addAllEdges(self):
+    def __addAllEdges(self) -> bool:
         """
         Adds all the connections as edges in the graph
         """
         for connection in self.connections:
-            self.graph.add_edge(connection[0], connection[1])
+            self.graph.add_edge(connection.start_node, connection.end_node)
 
         return True
     
-    def __add_node(self, node: Node):
+    def __add_node(self, node: Node) -> bool:
         """
         Private function that adds node into nodes list
 
@@ -103,7 +123,7 @@ class DirectedGraph:
 
         return True
         
-    def add_node(self, value: int):
+    def add_node(self, value: int) -> bool:
         """
         Adds node into node list using private function __add_node while also checking for duplicates
 
@@ -118,7 +138,7 @@ class DirectedGraph:
 
         return False
     
-    def __add_connection(self, start_node: Node, end_node: Node):
+    def __add_connection(self, start_node: Node, end_node: Node) -> bool:
         """
         Private function that adds connection into the connections list
 
@@ -135,7 +155,7 @@ class DirectedGraph:
 
         return False
     
-    def add_connection(self, start_node_value: int, end_node_value: int):
+    def add_connection(self, start_node_value: int, end_node_value: int) -> bool:
         """
         Adds connection into connections list using private function __add_connection while also checking for duplicates
 
@@ -150,6 +170,67 @@ class DirectedGraph:
         end_node = next(node for node in self.nodes if node.value == end_node_value)
 
         return self.__add_connection(start_node, end_node)
+
+    def __remove_node(self, node: Node) -> bool:
+        """
+        Private function that removes node from the node list while also removing any connections associated with node
+        Args:
+            node(node): node to remove
         
-    #remove_node
-    #remove_connection
+        Returns:
+            bool: whether removing the node from the node list was successful
+        """
+         self.nodes.remove(node)
+
+         for connection in self.connections:
+            if connection.start_node == node or connection.end_node == node:
+                self.__remove_connection(connection)
+                return True
+
+         return False
+    
+    def remove_node(self, value: int) -> bool:
+        """
+        Removes node from the graph using private function __remove_node while also checking its presense
+        Args:
+            value(int): value of the node to remove
+        
+        Returns:
+            bool: whether removing the node from the graph was successful
+        """
+        for node in self.nodes:
+            if node.value == value:
+                __remove_node(node)
+                return True
+        
+        return False
+    
+    def __remove_connection(self, node_connection: NodeConnection) -> bool:
+        """
+        Private function that removes the connection from the connections list
+        Args:
+            node_connection(NodeConnection): connection to remove
+        
+        Returns:
+            bool: whether removing the connection from the connection list was successful
+        """
+        self.connections.remove(node_connection)
+        return True
+
+    def remove_connection(self, start_node, end_node) -> bool:
+        """
+        Removes connection from the graph using private function __remove_connection while checking for presense
+        Args:
+            start_node(int): value of the start node of the connection to remove
+            end_node(int): value of the end node of the connection to remove
+        
+        Returns:
+            bool: whether removing the connection from the graph list was successful
+        """
+        for connection in self.connections:
+            if connection.start_node.value == start_node 
+                and connection.end_node.value == end_node:
+                __remove_connection(connection)
+                return True
+        
+        return False
