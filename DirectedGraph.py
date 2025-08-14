@@ -46,7 +46,7 @@ class DirectedGraph:
         plt.tight_layout()
         plt.show()
         
-    def __fromNodeListToValueList(self -> List[int]):
+    def __fromNodeListToValueList(self) -> List[int]:
         """
         Converts the nodes list to an list
         """
@@ -107,7 +107,7 @@ class DirectedGraph:
         Returns:
             int: degree of the graph
         """
-        degree: int
+        degree: int = 0
 
         for node in self.nodes:
             degree += node.connection_count
@@ -197,14 +197,14 @@ class DirectedGraph:
         Returns:
             bool: whether removing the node from the node list was successful
         """
-         self.nodes.remove(node)
+        self.nodes.remove(node)
 
-         for connection in self.connections:
+        for connection in self.connections:
             if connection.start_node == node or connection.end_node == node:
                 self.__remove_connection(connection)
                 return True
 
-         return False
+        return False
     
     def remove_node(self, value: int) -> bool:
         """
@@ -217,7 +217,7 @@ class DirectedGraph:
         """
         for node in self.nodes:
             if node.value == value:
-                __remove_node(node)
+                self.__remove_node(node)
                 return True
         
         return False
@@ -245,9 +245,8 @@ class DirectedGraph:
             bool: whether removing the connection from the graph list was successful
         """
         for connection in self.connections:
-            if connection.start_node.value == start_node 
-                and connection.end_node.value == end_node:
-                __remove_connection(connection)
+            if connection.start_node.value == start_node and connection.end_node.value == end_node:
+                self.__remove_connection(connection)
                 return True
-        
+            
         return False
