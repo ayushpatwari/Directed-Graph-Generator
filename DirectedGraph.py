@@ -113,8 +113,39 @@ class DirectedGraph:
             degree += node.connection_count
         
         return degree
-            
+
+    def isConnected(self) -> bool:
+        self.__isNormalConnected()
+
+
+    def __isNormalConnected(self) -> bool:
+        visited = set()
+        self.DFS(self.nodes[0], visited, self.connections)
+
+        return len(visited) == len(self.nodes)
+
+    def __isTransposeConnected(self) -> bool:
+        visited = set()
+        reverse_connections: list[NodeConnection] = __reverse_graph()
+        self.DFS(self.nodes[0], visited, reverse_connections)
+        
+        return len(visited) == len(self.nodes)
     
+    def __DFS(self, node: Node, visited: list[Node], connections: list[NodeConnection]):
+        visited.add(node)
+        for connection in connections:
+            if (connection.start_node == node):
+                if (connection.end_node not in visited):
+                    self.DFS(connection.end_node, visited)
+
+    def __reverse_graph(self) -> list[NodeConnection]:
+        new_connections: list[NodeConnection] = []
+
+        for connection in self.connnections:
+            new_connection.append(NodeConnection(connection.end_node, connection.start_node))
+        
+        return new_connections
+        
     def __addAllEdges(self) -> bool:
         """
         Adds all the connections as edges in the graph
