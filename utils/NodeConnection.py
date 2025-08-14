@@ -21,7 +21,7 @@ class NodeConnection:
         self.start_node = new_start_node
         return True
     
-    def change_end_node(self, new_end_node: Node):
+    def change_end_node(self, new_end_node: Node) -> bool:
         """"
         Changes end node of the connection
         
@@ -33,4 +33,12 @@ class NodeConnection:
         """
         self.end_node = new_end_node
         return True
-    
+
+    def __str__(self) -> str:
+        """
+        Expresses node connection through its node start value and node end value
+        
+        Returns:
+            string: value of node connection
+        """
+        return f"Start node: {str(self.start_node)} - End Node: {str(self.end_node)}"

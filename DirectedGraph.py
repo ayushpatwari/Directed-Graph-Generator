@@ -61,7 +61,7 @@ class DirectedGraph:
         """
         Converts value list to list of tuple of nodes
         """
-        node_list: list[tuple[Node, Node]] = []
+        node_list: List[tuple[Node, Node]] = []
         
         for start_val, end_val in array:
             start_node = next(node for node in self.nodes if node.value == start_val)
@@ -74,7 +74,7 @@ class DirectedGraph:
         """
         Converts value list to list of node connection
         """
-        node_connection_list: list[NodeConnection] = []
+        node_connection_list: List[NodeConnection] = []
 
         for start_val, end_val in array:
             start_node: Node
@@ -115,31 +115,95 @@ class DirectedGraph:
         return degree
 
     def isConnected(self) -> bool:
-        self.__isNormalConnected()
+        """
+        Returns whether the graph is connected at all
+        
+        Returns:
+            bool: whether the graph is connected at all
+        """
+        return self.__isNormalConnected() or self.__isTransposeConnected()
+    
+    def connectivenessType(self) -> str:
+        """
+        Returns the type of the connectiveness of the graph
+        
+        Returns:
+            str: the type of connectiveness
+        """
+        if (self.isStronlyConnected()):
+            return "strong"
+        else if (self.isWeaklyConnected()):
+            return "weak"
+        
+        return "None"
+
+    def isStronlyConnected(self) -> bool:
+        """
+        Returns whether the graph is strongly connected
+        
+        Returns:
+            bool: whether the graph is strongly connected
+        """
+        return self.__isNormalConnected() and self.__isTransposeConnected()
+    
+    def isWeaklyConnected(self) -> bool:
+        """
+        Returns whether the graph is weakly connected
+        
+        Returns:
+            bool: whether the graph is weakly connected
+        """
+        return self.__isNormalConnected() and (not self.__isTransposeConnected())
 
 
     def __isNormalConnected(self) -> bool:
+        """
+        Returns whether the normal graph is connected
+
+        Returns:
+            bool: whether the graph forward is connected
+        """
         visited = set()
         self.DFS(self.nodes[0], visited, self.connections)
 
         return len(visited) == len(self.nodes)
 
     def __isTransposeConnected(self) -> bool:
+        """
+        Returns whether the transpose graph is connected
+        
+        Returns:
+            bool: whether the graph transposed is connected
+        """
         visited = set()
-        reverse_connections: list[NodeConnection] = __reverse_graph()
+        reverse_connections: List[NodeConnection] = __transpose_graph()
         self.DFS(self.nodes[0], visited, reverse_connections)
         
         return len(visited) == len(self.nodes)
     
-    def __DFS(self, node: Node, visited: list[Node], connections: list[NodeConnection]):
+    def __DFS(self, node: Node, visited: List[Node], connections: List[NodeConnection]):
+        """
+        Depth first searches the graph to find the connectiveness
+        
+        Args:
+            node(Node): start node for current search iteration
+            visited(List[Node]): current node visited list
+            connections(List[NodeConnection]): connections of the graph
+        """
         visited.add(node)
         for connection in connections:
             if (connection.start_node == node):
                 if (connection.end_node not in visited):
                     self.DFS(connection.end_node, visited)
 
-    def __reverse_graph(self) -> list[NodeConnection]:
-        new_connections: list[NodeConnection] = []
+    def __transpose_graph(self) -> List[NodeConnection]:
+        """
+        Tranposes the graph by swapping all the connections
+
+        Returns:
+            List[NodeConnection]: new reversed node connections list
+        """
+        new_connections: List[NodeConnection] = []
 
         for connection in self.connnections:
             new_connection.append(NodeConnection(connection.end_node, connection.start_node))
@@ -149,6 +213,9 @@ class DirectedGraph:
     def __addAllEdges(self) -> bool:
         """
         Adds all the connections as edges in the graph
+
+        Returns:
+            bool: whether adding all the edges was successful
         """
         for connection in self.connections:
             self.graph.add_edge(connection.start_node, connection.end_node)

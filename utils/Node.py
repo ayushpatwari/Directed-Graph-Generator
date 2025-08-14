@@ -38,6 +38,6 @@ class Node:
         Expresses node through its value
         
         Returns:
-            string: value of node as string
+            string: value of node
         """
         return str(self.value)
