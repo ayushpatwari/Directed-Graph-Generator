@@ -1,8 +1,8 @@
 from typing import List
 import networkx as nx
 import matplotlib.pyplot as plt
-from Node import Node
-from NodeConnection import NodeConnection
+from utils.Node import Node
+from utils.NodeConnection import NodeConnection
 
 class DirectedGraph:
     """
