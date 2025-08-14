@@ -132,7 +132,7 @@ class DirectedGraph:
         """
         if (self.isStronlyConnected()):
             return "strong"
-        else if (self.isWeaklyConnected()):
+        elif (self.isWeaklyConnected()):
             return "weak"
         
         return "None"
@@ -176,7 +176,7 @@ class DirectedGraph:
             bool: whether the graph transposed is connected
         """
         visited = set()
-        reverse_connections: List[NodeConnection] = __transpose_graph()
+        reverse_connections: List[NodeConnection] = self.__transpose_graph()
         self.DFS(self.nodes[0], visited, reverse_connections)
         
         return len(visited) == len(self.nodes)
@@ -206,7 +206,7 @@ class DirectedGraph:
         new_connections: List[NodeConnection] = []
 
         for connection in self.connnections:
-            new_connection.append(NodeConnection(connection.end_node, connection.start_node))
+            new_connections.append(NodeConnection(connection.end_node, connection.start_node))
         
         return new_connections
         
