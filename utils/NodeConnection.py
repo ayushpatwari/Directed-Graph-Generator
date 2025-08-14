@@ -1,4 +1,4 @@
-from Node import Node
+from utils.Node import Node
 
 class NodeConnection:
     """"

@@ -77,13 +77,15 @@ class DirectedGraph:
         node_connection_list: List[NodeConnection] = []
 
         for start_val, end_val in array:
-            start_node: Node
-            end_node: Node
+            start_node: Node = None
+            end_node: Node = None
             for node in self.nodes:
                 if node.value == start_val:
                     start_node = node
+                    node.add_connection_count()
                 if node.value == end_val:
                     end_node = node
+                    node.add_connection_count()
             node_connection_list.append(NodeConnection(start_node, end_node))
         
         return node_connection_list
@@ -91,7 +93,7 @@ class DirectedGraph:
             
     def __fromValueListToNodeList(self, array) -> List[Node]:
         """
-        Converts value list to list of N"l"des
+        Converts value list to list of Nodes
         """
         node_list: List[Node] = list()
         
@@ -164,7 +166,7 @@ class DirectedGraph:
             bool: whether the graph forward is connected
         """
         visited = set()
-        self.DFS(self.nodes[0], visited, self.connections)
+        self.__DFS(self.nodes[0], visited, self.connections)
 
         return len(visited) == len(self.nodes)
 
@@ -177,24 +179,24 @@ class DirectedGraph:
         """
         visited = set()
         reverse_connections: List[NodeConnection] = self.__transpose_graph()
-        self.DFS(self.nodes[0], visited, reverse_connections)
+        self.__DFS(self.nodes[0], visited, reverse_connections)
         
         return len(visited) == len(self.nodes)
     
-    def __DFS(self, node: Node, visited: List[Node], connections: List[NodeConnection]):
+    def __DFS(self, node: Node, visited: set, connections: List[NodeConnection]):
         """
         Depth first searches the graph to find the connectiveness
         
         Args:
             node(Node): start node for current search iteration
-            visited(List[Node]): current node visited list
+            visited(set): current node visited list
             connections(List[NodeConnection]): connections of the graph
         """
         visited.add(node)
         for connection in connections:
             if (connection.start_node == node):
                 if (connection.end_node not in visited):
-                    self.DFS(connection.end_node, visited)
+                    self.__DFS(connection.end_node, visited, connections)
 
     def __transpose_graph(self) -> List[NodeConnection]:
         """
@@ -205,7 +207,7 @@ class DirectedGraph:
         """
         new_connections: List[NodeConnection] = []
 
-        for connection in self.connnections:
+        for connection in self.connections:
             new_connections.append(NodeConnection(connection.end_node, connection.start_node))
         
         return new_connections
@@ -262,10 +264,10 @@ class DirectedGraph:
         Returns:
             bool: whether adding the connection to the connections list was successful
         """
-        if (start_node, end_node) not in [(c[0].value, c[1].value) for c in self.connections]:
-            self.connections.append((start_node, end_node))
-            start_node.add_connection()
-            end_node.add_connection()
+        if not any(connection.start_node == start_node and connection.end_node == end_node for connection in self.connections):
+            self.connections.append(NodeConnection(start_node, end_node))
+            start_node.add_connection_count()
+            end_node.add_connection_count()
             return True
 
         return False
@@ -296,13 +298,16 @@ class DirectedGraph:
             bool: whether removing the node from the node list was successful
         """
         self.nodes.remove(node)
+        
+        connections_to_remove = [connection for connection in self.connections if connection.start_node == node or connection.end_node == node]
+        
+        if len(connections_to_remove) == 0:
+            return False
 
-        for connection in self.connections:
-            if connection.start_node == node or connection.end_node == node:
-                self.__remove_connection(connection)
-                return True
-
-        return False
+        for connection in connections_to_remove:
+            self.__remove_connection(connection)
+            
+        return True
     
     def remove_node(self, value: int) -> bool:
         """
@@ -332,7 +337,7 @@ class DirectedGraph:
         self.connections.remove(node_connection)
         return True
 
-    def remove_connection(self, start_node, end_node) -> bool:
+    def remove_connection(self, start_node_value: int, end_node_value: int) -> bool:
         """
         Removes connection from the graph using private function __remove_connection while checking for presense
         Args:
@@ -343,7 +348,7 @@ class DirectedGraph:
             bool: whether removing the connection from the graph list was successful
         """
         for connection in self.connections:
-            if connection.start_node.value == start_node and connection.end_node.value == end_node:
+            if connection.start_node.value == start_node_value and connection.end_node.value == end_node_value:
                 self.__remove_connection(connection)
                 return True
             
