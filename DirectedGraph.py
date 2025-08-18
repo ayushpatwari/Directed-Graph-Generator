@@ -157,6 +157,14 @@ class DirectedGraph:
         """
         return self.__isNormalConnected() and (not self.__isTransposeConnected())
 
+    def isEuclideanCircuit(self) -> bool:
+        for node in self.nodes:
+            if node.degree % 2 == 0:
+                return false
+        
+        return self.isStronlyConnected()
+        
+
 
     def __isNormalConnected(self) -> bool:
         """
