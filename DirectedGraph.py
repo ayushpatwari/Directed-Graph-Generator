@@ -45,62 +45,6 @@ class DirectedGraph:
         plt.title("Discrete Mathematics: Directed Graph", fontsize=20, fontweight='bold')
         plt.tight_layout()
         plt.show()
-        
-    def __fromNodeListToValueList(self) -> List[int]:
-        """
-        Converts the nodes list to an list
-        """
-        array: List[int] = list()
-        
-        for node in self.nodes:
-            array.append(node.value)
-            
-        return array
-            
-    def __fromValueListToNodeListOfTuple(self, array: List[tuple[int, int]]) -> List[tuple[Node, Node]]:
-        """
-        Converts value list to list of tuple of nodes
-        """
-        node_list: List[tuple[Node, Node]] = []
-        
-        for start_val, end_val in array:
-            start_node = next(node for node in self.nodes if node.value == start_val)
-            end_node = next(node for node in self.nodes if node.value == end_val)
-            node_list.append((start_node, end_node))
-        
-        return node_list
-
-    def __fromValueListToNodeConnectionList(self, array: List[tuple[int, int]]) -> List[NodeConnection]:
-        """
-        Converts value list to list of node connection
-        """
-        node_connection_list: List[NodeConnection] = []
-
-        for start_val, end_val in array:
-            start_node: Node = None
-            end_node: Node = None
-            for node in self.nodes:
-                if node.value == start_val:
-                    start_node = node
-                    node.add_connection_count()
-                if node.value == end_val:
-                    end_node = node
-                    node.add_connection_count()
-            node_connection_list.append(NodeConnection(start_node, end_node))
-        
-        return node_connection_list
-                    
-            
-    def __fromValueListToNodeList(self, array) -> List[Node]:
-        """
-        Converts value list to list of Nodes
-        """
-        node_list: List[Node] = list()
-        
-        for value in array:
-            node_list.append(Node(value))
-
-        return node_list
 
     def degree(self) -> int:
         """
@@ -158,13 +102,35 @@ class DirectedGraph:
         return self.__isNormalConnected() and (not self.__isTransposeConnected())
 
     def isEuclideanCircuit(self) -> bool:
+        """
+        Returns whether the graph is a euclidean circuit
+        
+        Returns:
+            bool: whether the graph is an euclidean circuit
+        """
         for node in self.nodes:
-            if node.degree % 2 == 0:
+            if node.degree % 2 != 0:
                 return false
         
         return self.isStronlyConnected()
+    def isEuclideanTrail(self) -> bool:
+        """
+        Returns whether the graph is an euclidean trail
         
+        Returns:
+            bool: whether the graph is an euclidean trail
+        """
+        odd_degree_count: int = 0
 
+        for node in self.nodes:
+            if node.degree % 2 != 0:
+                odd_degree_count += 1
+                
+                if odd_degree_count > 2:
+                    return false
+
+        return self.isStronlyConnected()
+            
 
     def __isNormalConnected(self) -> bool:
         """
@@ -361,3 +327,59 @@ class DirectedGraph:
                 return True
             
         return False
+
+        def __fromNodeListToValueList(self) -> List[int]:
+        """
+        Converts the nodes list to an list
+        """
+        array: List[int] = list()
+        
+        for node in self.nodes:
+            array.append(node.value)
+            
+        return array
+            
+    def __fromValueListToNodeListOfTuple(self, array: List[tuple[int, int]]) -> List[tuple[Node, Node]]:
+        """
+        Converts value list to list of tuple of nodes
+        """
+        node_list: List[tuple[Node, Node]] = []
+        
+        for start_val, end_val in array:
+            start_node = next(node for node in self.nodes if node.value == start_val)
+            end_node = next(node for node in self.nodes if node.value == end_val)
+            node_list.append((start_node, end_node))
+        
+        return node_list
+
+    def __fromValueListToNodeConnectionList(self, array: List[tuple[int, int]]) -> List[NodeConnection]:
+        """
+        Converts value list to list of node connection
+        """
+        node_connection_list: List[NodeConnection] = []
+
+        for start_val, end_val in array:
+            start_node: Node = None
+            end_node: Node = None
+            for node in self.nodes:
+                if node.value == start_val:
+                    start_node = node
+                    node.add_connection_count()
+                if node.value == end_val:
+                    end_node = node
+                    node.add_connection_count()
+            node_connection_list.append(NodeConnection(start_node, end_node))
+        
+        return node_connection_list
+                    
+            
+    def __fromValueListToNodeList(self, array) -> List[Node]:
+        """
+        Converts value list to list of Nodes
+        """
+        node_list: List[Node] = list()
+        
+        for value in array:
+            node_list.append(Node(value))
+
+        return node_list
