@@ -197,6 +197,24 @@ class DirectedGraph:
             self.graph.add_edge(connection.start_node, connection.end_node)
 
         return True
+
+    def nodes(self) -> List[Node]:
+        """
+        Returns the nodes of the graphs
+        
+        Returns:
+            List[Node]: list of nodes
+        """
+        return self.nodes
+    
+    def connections(self) -> List[NodeConnection]:
+        """
+        Returns the connections of the graphs
+        
+        Returns:
+            List[NodeConnection]: list of connections
+        """
+        return self.connections
     
     def __add_node(self, node: Node) -> bool:
         """
