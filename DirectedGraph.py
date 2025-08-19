@@ -346,7 +346,7 @@ class DirectedGraph:
             
         return False
 
-        def __fromNodeListToValueList(self) -> List[int]:
+    def __fromNodeListToValueList(self) -> List[int]:
         """
         Converts the nodes list to an list
         """
