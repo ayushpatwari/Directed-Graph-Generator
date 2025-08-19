@@ -1,0 +1,21 @@
+[build-system]
+
+[project]
+name = "Directed Graph"
+version = "1.0.0"
+authors = [
+    {name="Ayush Patwari"}
+]
+description = "A package that creates a directed graph"
+readme = "README.md"
+requires-python = ">3.9"
+classifiers = [
+    "Programming Language:: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*]
+
+[project.urls]
+Homepage = "https://github.com/ayushpatwari/Directed-Graph-Generator"
+Issues  = "https://github.com/ayushpatwari/Directed-Graph-Generator/issues"
