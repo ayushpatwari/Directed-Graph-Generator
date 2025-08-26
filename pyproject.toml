@@ -1,20 +1,39 @@
 [build-system]
+requires = [
+"hatchling >= 1.26",
+"contourpy==1.3.2",
+"cycler==0.12.1",
+"fonttools==4.59.0",
+"kiwisolver==1.4.8",
+"matplotlib==3.10.3",
+"networkx==3.5",
+"numpy==2.3.1",
+"packaging==25.0",
+"pillow==11.3.0",
+"pyparsing==3.2.3",
+"python-dateutil==2.9.0.post0",
+"six==1.17.0",
+]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/Directed-Graph-Generator"]
+
 
 [project]
-name = "Directed Graph"
-version = "1.0.0"
+name = "Directed-Graph-Generator"
+version = "1.0.1"
 authors = [
-    {name="Ayush Patwari"}
+    {name="Ayush Patwari"},
 ]
-description = "A package that creates a directed graph"
+description = "A package that helps create directed graphs used in graph theory"
 readme = "README.md"
 requires-python = ">3.9"
 classifiers = [
-    "Programming Language:: Python :: 3",
     "Operating System :: OS Independent",
 ]
 license = "MIT"
-license-files = ["LICEN[CS]E*]
+license-files = ["LICEN[CS]E*"]
 
 [project.urls]
 Homepage = "https://github.com/ayushpatwari/Directed-Graph-Generator"

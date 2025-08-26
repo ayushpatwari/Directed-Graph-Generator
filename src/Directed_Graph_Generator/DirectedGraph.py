@@ -110,7 +110,7 @@ class DirectedGraph:
         """
         for node in self.nodes:
             if node.degree % 2 != 0:
-                return false
+                return False
         
         return self.isStronlyConnected()
     def isEuclideanTrail(self) -> bool:
@@ -127,7 +127,7 @@ class DirectedGraph:
                 odd_degree_count += 1
                 
                 if odd_degree_count > 2:
-                    return false
+                    return False
 
         return self.isStronlyConnected()
             
